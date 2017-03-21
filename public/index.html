@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="img/favicon.ico">
+  <title>Mocks</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <style>
+    .container {
+      width: 100%
+    }
+    
+    #table-mocks {
+      font-size: 0.9em;
+    }
+    
+    .navbar {
+      border-radius: 0;
+    }
+    
+    .selector {
+      margin-top: 8px;
+      width: 147px;
+      height: 34px;
+      padding: 6px 12px;
+      font-size: 14px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    .mock-change {
+      cursor: pointer;
+    }
+    
+    .test-box {
+      position: fixed;
+      border: 1px solid gray;
+      top: 10px;
+      left: 10px;
+      min-width: 500px;
+      background-color: white;
+      border-radius: 5px;
+      padding: 0px 10px 5px 10px;
+      z-index: 10;
+      min-height: 300px;
+      display: none;
+      overflow: scroll;
+      height: 100%;
+    }
+    
+    .test-box-close {
+      float: left;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="test-box">
+
+  </div>
+  <nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Mocks</a>
+      </div>
+
+
+      <div id="navbar" class="navbar-collapse collapse">
+        <select class="selector" id="application">
+        </select>
+        <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <a href="#" id="refresh" class="btn btn-info"><i class="glyphicon glyphicon-refresh" ></i> Reload config</a>
+          </div>
+        </form>
+      </div>
+      <!--/.navbar-collapse -->
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered" id="table-mocks">
+          <thead>
+            <tr>
+              <th style='text-align:center'>Tester<br /></th>
+              <th style='text-align:center'>Méthode</th>
+              <th>Uri</th>
+              <th style='text-align:center'>Actif</th>
+              <th>Name</th>
+              <th>Fichier</th>
+              <th style='text-align:center'>Durée</th>
+              <th style='text-align:center'>HttpCode</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script>
+    var application = null 
+    /**
+     * Rechargement des mocks
+     */
+    function getMock(rebuild) {
+      $("#refresh").hide();
+      var uri = rebuild ? "/internal/rebuild" : "/internal/mocks";
+      $.get(uri + "?app=" + application, function (data) {
+        refresh(data.data.mocks, data.data.projects, data.data.project);
+        $("#refresh").show();
+      });
+    }
+
+    getMock(false);
+
+    $("#refresh").click(function () {
+      getMock(true);
+    });
+
+    $("#application").change(function () {
+      application = $("#application option:selected").val();
+      getMock(true);
+    })
+
+    function refresh(mocks, projects, project) {
+      $("#table-mocks tbody").html("");
+      var mocksByRessources = {};
+
+      $.each(mocks, function (index, value) {
+        var key = value.method + " " + value.uri;
+        if (!mocksByRessources[key]) {
+          mocksByRessources[key] = {
+            "method": value.method,
+            "uri": value.uri,
+            "mocks": []
+          };
+        }
+        mocksByRessources[key].mocks.push(value);
+      });
+
+      $('#application').html('')
+      $.each(projects, function(index, p){
+        $('#application').append('<option value="'+p.key+'" '+ (p.key === project ? 'selected="selected"' : '') + '>'+p.name+'</option>')    
+      })
+
+      application = $("#application option:selected").val();
+
+      $.each(mocksByRessources, function (key, obj) {
+        var i = 0;
+        var start = "";
+        $.each(obj.mocks, function (index, value) {
+          var active = '<span ref-method="' + value.method + '" ref-name="' + value.name + '" ref-uri="' + value.uri + '" class="glyphicon glyphicon-star-empty mock-change" style="color:orange;"></span>';
+
+          if (value.active) {
+            active = '<span class="glyphicon glyphicon-star" style="color:green;"></span>'
+          }
+          if (i == 0) {
+            start += "<td style='text-align:center' rowspan='" + obj.mocks.length + "' ><button ref-method='" + value.method + "' ref-uri='" + value.uri + "' type='button' class='btn btn-info btn-xs testme'><span class='glyphicon glyphicon glyphicon-sunglasses'></span></button></td>";
+            start += "<td style='text-align:center' rowspan='" + obj.mocks.length + "' >" + value.method + "</td>";
+            start += "<td rowspan='" + obj.mocks.length + "' >" + value.uri + "</td>";
+          } else start = "";
+          var httpcode = '<span class="label ' + ((value.httpcode == 200) ? 'label-success' : 'label-danger') + '">' + value.httpcode + '<span>';
+          $("#table-mocks tbody").append("<tr>" + start + "<td style='text-align:center'>" + active + "</td><td>" + value.name + "</td><td>" + value.fileDisplay + "</td><td style='text-align:center'>" + value.duration + "ms</td><td style='text-align:center'>" + httpcode + "</td></tr>");
+          i++;
+        });
+      });
+
+      $(".testme").click(function () {
+        var method = $(this).attr("ref-method");
+        var uri = $(this).attr("ref-uri");
+        console.log(method + " " + uri);
+        $.ajax({
+          type: method,
+          url: $(this).attr("ref-uri") + "?r=" + Math.random(),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          data: null
+        }).always(function (data) {
+          $(".test-box").show();
+          $(".test-box").html("<h3>" + method + " " + uri + " <div class='test-box-close'><i class='glyphicon glyphicon-remove-sign'></i></div></h3><pre>" + JSON.stringify(data, null, 2) + "</pre>");
+          $(".test-box-close").click(function () { $(".test-box").hide() })
+        });
+      });
+
+      $(".mock-change").click(function () {
+        $.ajax({
+          type: 'PUT',
+          url: '/internal/mocks/',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          data: JSON.stringify({
+            method: $(this).attr("ref-method"),
+            uri: $(this).attr("ref-uri"),
+            name: $(this).attr("ref-name"),
+          })
+        }).done(function (data) {
+          refresh(data.data.mocks, data.data.projects, data.data.project);
+        });
+      });
+
+    }
+  </script>
+
+</body>
+
+</html>

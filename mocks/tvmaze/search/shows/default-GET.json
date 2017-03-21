@@ -1,0 +1,57 @@
+[
+  {
+    "score": 22.134655,
+    "show": {
+      "id": 436,
+      "url": "http://www.tvmaze.com/shows/436/dead-like-me",
+      "name": "Dead Like Me",
+      "type": "Scripted",
+      "language": "English",
+      "genres": [
+        "Drama",
+        "Comedy",
+        "Supernatural"
+      ],
+      "status": "Ended",
+      "runtime": 60,
+      "premiered": "2003-06-27",
+      "schedule": {
+        "time": "12:00",
+        "days": []
+      },
+      "rating": {
+        "average": 8.6
+      },
+      "weight": 0,
+      "network": {
+        "id": 9,
+        "name": "Showtime",
+        "country": {
+          "name": "United States",
+          "code": "US",
+          "timezone": "America/New_York"
+        }
+      },
+      "webChannel": null,
+      "externals": {
+        "tvrage": 3261,
+        "thetvdb": 72129,
+        "imdb": "tt0348913"
+      },
+      "image": {
+        "medium": "http://static.tvmaze.com/uploads/images/medium_portrait/3/9014.jpg",
+        "original": "http://static.tvmaze.com/uploads/images/original_untouched/3/9014.jpg"
+      },
+      "summary": "<p>You're about to be collected. When an errant toilet seat from the falling Mir space station puts an abrupt end to her life, George discovers that death is nothing like she thought it would be. Recruited to collect the souls of others as they die, she suddenly finds herself an unwilling participant in a line of work she never knew existed: Grim Reaping!</p>",
+      "updated": 1486080983,
+      "_links": {
+        "self": {
+          "href": "http://api.tvmaze.com/shows/436"
+        },
+        "previousepisode": {
+          "href": "http://api.tvmaze.com/episodes/41373"
+        }
+      }
+    }
+  }
+]
