@@ -10,6 +10,11 @@ exports.mocks = {
           'httpcode': 404,
           'response': 'commons/404.html'
         }
+      },
+      'POST': {
+        'default': {
+          'response': 'test/default-POST.json'
+        }
       }
     }
   }

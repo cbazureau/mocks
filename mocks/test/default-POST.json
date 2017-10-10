@@ -1,0 +1,86 @@
+{
+    "currentParams": {
+      "children": 4,
+      "city": true,
+      "ecolo": true
+    },
+    "vehicles": [
+        {
+          "brand": "Renault",
+          "modelLabel": "Clio",
+          "versionLabel": "version",
+          "image": [
+              {
+                "type": "",
+                "url": "http://lorempixel.com/1024/768/"
+              }
+          ],
+          "price": "24790.0",
+          "year": "year",
+          "fuel": "fuel",
+          "mileage": "mileage"
+        },
+        {
+          "brand": "Renault",
+          "modelLabel": "Clio",
+          "versionLabel": "version",
+          "image": [
+              {
+                "type": "",
+                "url": "http://lorempixel.com/1024/768/"
+              }
+          ],
+          "price": "24790.0",
+          "year": "year",
+          "fuel": "fuel",
+          "mileage": "mileage"
+        },
+        {
+          "brand": "Renault",
+          "modelLabel": "Clio",
+          "versionLabel": "version",
+          "image": [
+              {
+                "type": "",
+                "url": "http://lorempixel.com/1024/768/"
+              }
+          ],
+          "price": "24790.0",
+          "year": "year",
+          "fuel": "fuel",
+          "mileage": "mileage"
+        },
+        {
+          "brand": "Renault",
+          "modelLabel": "Clio",
+          "versionLabel": "version",
+          "image": [
+              {
+                "type": "",
+                "url": "http://lorempixel.com/1024/768/"
+              }
+          ],
+          "price": "24790.0",
+          "year": "year",
+          "fuel": "fuel",
+          "mileage": "mileage"
+        },
+        {
+          "brand": "Renault",
+          "modelLabel": "Clio",
+          "versionLabel": "version",
+          "image": [
+              {
+                "type": "",
+                "url": "http://lorempixel.com/1024/768/"
+              }
+          ],
+          "price": "24790.0",
+          "year": "year",
+          "fuel": "fuel",
+          "mileage": "mileage"
+        }
+    ],
+    "total": 534
+  }
+  
